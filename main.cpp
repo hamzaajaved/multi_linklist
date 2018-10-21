@@ -24,6 +24,7 @@ void insert_student(string Name,int seat_no,double GP,Student **start);
 CLASS* searchClass(string classtoSearch, CLASS **start);
 void searchStudent(int seat_no, CLASS **start);
 void deleteAClass(string Name,CLASS **start);
+void deleteAStudent(int seat_no,CLASS **start);
 void print_class(CLASS **start);
 
 
@@ -57,7 +58,15 @@ int main(int argc, char const *argv[])
   searchStudent(500,&start);
 
   deleteAClass("II",&start);
+  cout << "After deletion of Class II" << endl;
   print_class(&start);
+
+  deleteAStudent(164,&start);
+  deleteAStudent(101,&start);
+
+  cout << "After deletion of 164 and 101" << endl;
+  print_class(&start);
+
 
   system("pause");
   return 0;
@@ -142,6 +151,7 @@ void searchStudent(int seat_no, CLASS **start){
   }
 }
 
+// Delete A Class
 void deleteAClass(string Name,CLASS **start){
   struct CLASS *curr = *start;
   if((*start)->name == Name){
@@ -159,6 +169,37 @@ void deleteAClass(string Name,CLASS **start){
   }
 }
 
+// Delete A Student
+void deleteAStudent(int seat_no,CLASS **start){
+  struct CLASS *currClass = *start;
+  Student *currStudent= NULL;
+  int temp = 0;
+  while(currClass != NULL){
+        currStudent = currClass->header;
+        if(currStudent->seat_no == seat_no){ 
+          currClass->header = currStudent->next;
+          free(currStudent);
+        }else{
+          currStudent= (currClass->header)->next;
+          Student *prev= currClass->header;
+        
+        while(currStudent != NULL){
+          if(currStudent->seat_no == seat_no){
+            temp++;
+            prev->next= currStudent->next;
+            break;
+          }
+          currStudent = currStudent->next;
+        }
+        currClass = currClass->next;
+    }
+  }
+  if(temp > 0){
+    free(currStudent);
+  }else{
+    cout<<"\nStudent is not in any class.\n";
+  }
+}
 
 //PRINT CLASS
 void print_class(CLASS **start){
