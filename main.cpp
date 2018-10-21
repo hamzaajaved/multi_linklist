@@ -2,6 +2,7 @@
 #include<stdlib.h>
 using namespace std;
 
+// Structures
 struct CLASS{
   string name;
   int no_of_std;
@@ -16,10 +17,16 @@ struct Student{
   struct Student *next;
 };
 
+
+// Prototypes Declared
 void insert_class(string Name,int no_of_std,CLASS **start);
 void insert_student(string Name,int seat_no,double GP,Student **start);
 CLASS* searchClass(string classtoSearch, CLASS **start);
+void searchStudent(int seat_no, CLASS **start);
 void print_class(CLASS **start);
+
+
+
 int main(int argc, char const *argv[])
 {
   struct CLASS *start = NULL;
@@ -43,6 +50,10 @@ int main(int argc, char const *argv[])
   }
   print_class(&start);
 
+  searchStudent(90,&start);
+  searchStudent(100,&start);
+  searchStudent(102,&start);
+  searchStudent(500,&start);
   system("pause");
   return 0;
 }
@@ -100,6 +111,29 @@ CLASS* searchClass(string classtoSearch, CLASS **start){
     return curr;
   }else{
     return NULL;
+  }
+}
+
+// Search A Student
+void searchStudent(int seat_no, CLASS **start){
+  struct CLASS *currClass = *start;
+  int temp = 0;
+  while(currClass != NULL){
+     struct Student *currStudent = currClass->header;
+      while(currStudent != NULL){
+        if(currStudent->seat_no == seat_no){ 
+          temp++;
+          break;
+        }
+        currStudent = currStudent->next;
+      }
+    currClass = currClass->next;
+  }
+
+  if(temp == 1){
+    cout << "\nSeat No: " << seat_no << " Found!" << endl;
+  }else{
+     cout << "\nSeat No: " << seat_no << " Does Not Exist!" << endl;
   }
 }
 
