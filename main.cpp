@@ -23,6 +23,7 @@ void insert_class(string Name,int no_of_std,CLASS **start);
 void insert_student(string Name,int seat_no,double GP,Student **start);
 CLASS* searchClass(string classtoSearch, CLASS **start);
 void searchStudent(int seat_no, CLASS **start);
+void deleteAClass(string Name,CLASS **start);
 void print_class(CLASS **start);
 
 
@@ -54,6 +55,10 @@ int main(int argc, char const *argv[])
   searchStudent(100,&start);
   searchStudent(102,&start);
   searchStudent(500,&start);
+
+  deleteAClass("II",&start);
+  print_class(&start);
+
   system("pause");
   return 0;
 }
@@ -137,6 +142,23 @@ void searchStudent(int seat_no, CLASS **start){
   }
 }
 
+void deleteAClass(string Name,CLASS **start){
+  struct CLASS *curr = *start;
+  if((*start)->name == Name){
+    *start = (*start)->next;
+    free(curr);
+  }else{
+    curr = (*start)->next;
+    struct CLASS *prev = *start;
+    while(curr->name != Name){
+      curr = curr->next;
+      prev = prev->next;
+    }
+    prev->next = curr->next;  
+    free(curr);
+  }
+}
+
 
 //PRINT CLASS
 void print_class(CLASS **start){
@@ -153,4 +175,3 @@ void print_class(CLASS **start){
     currClass = currClass->next;
   }
 }
-
