@@ -28,44 +28,129 @@ void deleteAStudent(int seat_no,CLASS **start);
 void print_class(CLASS **start);
 
 
-
 int main(int argc, char const *argv[])
 {
   struct CLASS *start = NULL;
-  // Insert Classes
-  insert_class("I",10, &start);
-  insert_class("II",20,&start);
-  insert_class("III",10,&start);
+  int val;
+  do{
+    cout << "\n1 - Insert Class: \n2 - Insert Student: \n3 - Delete Class: \n4 - Delete Student: \n5 - Search A Student:  \n6 - Print All Students:  \n7 - Exit Menu" << endl;
+  
+    cout << "Your Choice: " << endl;
+    cin >> val;
+      switch(val){
+        case 1:
+        {
+           system("CLS");
+           string className;
+            int totalNoOfStd;
+            cout << "Enter Class Name: ";
+            cin >> className;
+            cout << "Enter Total No of Students in Class: ";
+            cin >> totalNoOfStd;
+            insert_class(className,totalNoOfStd,&start);
+            cout << "Class Successfully Inserted! Please Insert Students " << endl;
+            break;
+        }
+        case 2:
+        {
+            system("CLS");
+            string stdClass;
+            cout << "Enter Class Name to Insert Student: ";
+            cin >> stdClass;
+            string stdName;
+            cout << "Enter Student Name: ";
+            cin >> stdName;
+            int seatNo;
+            cout << "Enter Seat No: ";
+            cin >> seatNo;
+            double GP;
+            cout << "Enter GP: ";
+            cin >> GP;
 
-  // Insert Students in Class I
-  insert_student("Hamza",90,3.0,&start->header);
-  insert_student("Hadi",164,3.9,&start->header);
+            CLASS *curr = searchClass(stdClass, &start);
+            if(curr == NULL){
+              cout << "Class Not Found" << endl;
+            }else{
+              insert_student(stdName,seatNo,GP,&curr->header);
+            }
+            cout << "Student Successfully Inserted! " << endl;
+            break;
+        }
+        case 3:
+        {
+            system("CLS");
+            string delClassName;
+            cout << "Enter Class Name to Delete: ";
+            cin >> delClassName;
 
-  CLASS *curr = searchClass("III", &start);
-  if(curr == NULL){
-    cout << "Class Not Found" << endl;
-  }else{
-    // Insert Students in Class III
-    insert_student("Owais",100,3.9,&curr->header);
-    insert_student("Sohail",101,3.7,&curr->header);
-    insert_student("Ali Mustafa",102,3.8,&curr->header);
-  }
-  print_class(&start);
+            deleteAClass(delClassName,&start);
+            cout << "Class Successfully Deleted!" << endl;
+            break;
+        }
+        case 4:
+        {
+            system("CLS");
+            int delSeatNo;
+            cout << "Enter SeatNo To Delete Student: ";
+            cin >> delSeatNo;
 
-  searchStudent(90,&start);
-  searchStudent(100,&start);
-  searchStudent(102,&start);
-  searchStudent(500,&start);
+            deleteAStudent(delSeatNo,&start);
+            cout << "Student Successfully Deleted!" << endl;
+            break;
+        }
+        case 5:
+        {
+            system("CLS");
+            int searchSeatNo;
+            cout << "Enter SeatNo To Search A Student: ";
+            cin >> searchSeatNo;
 
-  deleteAClass("II",&start);
-  cout << "After deletion of Class II" << endl;
-  print_class(&start);
+            searchStudent(searchSeatNo,&start);
+            break;
+        } 
+        case 6:
+        {
+            system("CLS");
+            cout << "PRINTING ALL CLASSES" << endl;
+            print_class(&start);
+            break;
+        }
+      }
+  }while(val != 7);
+  // // Insert Classes
+  // insert_class("I",10, &start);
+  // insert_class("II",20,&start);
+  // insert_class("III",10,&start);
 
-  deleteAStudent(164,&start);
-  deleteAStudent(101,&start);
+  // // Insert Students in Class I
+  // insert_student("Hamza",90,3.0,&start->header);
+  // insert_student("Hadi",164,3.9,&start->header);
 
-  cout << "After deletion of 164 and 101" << endl;
-  print_class(&start);
+  // CLASS *curr = searchClass("III", &start);
+  // if(curr == NULL){
+  //   cout << "Class Not Found" << endl;
+  // }else{
+  //   // Insert Students in Class III
+  //   insert_student("Owais",100,3.9,&curr->header);
+  //   insert_student("Sohail",101,3.7,&curr->header);
+  //   insert_student("Ali Mustafa",102,3.8,&curr->header);
+  // }
+  // print_class(&start);
+
+  // searchStudent(90,&start);
+  // searchStudent(100,&start);
+  // searchStudent(102,&start);
+  // searchStudent(500,&start);
+
+  // deleteAClass("II",&start);
+  // cout << "After deletion of Class II" << endl;
+  // print_class(&start);
+
+  // deleteAStudent(164,&start);
+  // deleteAStudent(101,&start);
+
+  // cout << "After deletion of 164 and 101" << endl;
+  // print_class(&start);
 
 
   system("pause");
