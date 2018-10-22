@@ -84,7 +84,6 @@ int main(int argc, char const *argv[])
             cin >> delClassName;
 
             deleteAClass(delClassName,&start);
-            cout << "Class Successfully Deleted!" << endl;
             break;
         }
         case 4:
@@ -95,7 +94,6 @@ int main(int argc, char const *argv[])
             cin >> delSeatNo;
 
             deleteAStudent(delSeatNo,&start);
-            cout << "Student Successfully Deleted!" << endl;
             break;
         }
         case 5:
@@ -238,19 +236,33 @@ void searchStudent(int seat_no, CLASS **start){
 
 // Delete A Class
 void deleteAClass(string Name,CLASS **start){
-  struct CLASS *curr = *start;
-  if((*start)->name == Name){
+  if(*start == NULL){
+    cout << "List is Empty" << endl;
+  }else{
+    struct CLASS *curr = *start;
+    int temp = 0;
+    if((*start)->name == Name){
     *start = (*start)->next;
     free(curr);
-  }else{
-    curr = (*start)->next;
-    struct CLASS *prev = *start;
-    while(curr->name != Name){
-      curr = curr->next;
-      prev = prev->next;
+    }else{
+      curr = (*start)->next;
+      struct CLASS *prev = *start;
+      while(curr != NULL){
+        if(curr->name == Name){
+          temp++;
+          break;
+        }
+        curr = curr->next;
+        prev = prev->next;
+      }
+      if(temp > 0){
+        prev->next = curr->next;  
+        free(curr);
+        cout << "Class Successfully Deleted!" << endl;
+      }else{
+        cout << "Class Not Found!!" << endl;
+      }
     }
-    prev->next = curr->next;  
-    free(curr);
   }
 }
 
@@ -281,23 +293,32 @@ void deleteAStudent(int seat_no,CLASS **start){
   }
   if(temp > 0){
     free(currStudent);
+    cout << "Student Successfully Deleted!" << endl;  
   }else{
-    cout<<"\nStudent is not in any class.\n";
+    cout<<"\nStudent Not Found in any Class.\n";
   }
 }
 
 //PRINT CLASS
 void print_class(CLASS **start){
   struct CLASS *currClass = *start;
-  while(currClass != NULL){
-    cout << "\n\nClass Name: " << currClass->name <<  endl;
-    struct Student *currStudent = currClass->header;
-    while(currStudent != NULL){
-        cout << "Name: " << currStudent->name << endl;
-        cout << "Seat No: " << currStudent->seat_no << endl;
-        cout << "GP: " << currStudent->GP << "\n" << endl;
-        currStudent = currStudent->next;
-    } 
-    currClass = currClass->next;
+  if(*start == NULL){
+    cout << "List is Empty! Please Insert Classes and Students." << endl;
+  }else{
+    while(currClass != NULL){
+        cout << "\nClass Name: " << currClass->name <<  endl;
+        struct Student *currStudent = currClass->header;
+        if(currStudent == NULL){
+            cout << "No Student Exist in Class." << endl;
+        }else{
+          while(currStudent != NULL){
+              cout << "Name: " << currStudent->name << endl;
+              cout << "Seat No: " << currStudent->seat_no << endl;
+              cout << "GP: " << currStudent->GP << "\n" << endl;
+              currStudent = currStudent->next;
+          } 
+        }
+        currClass = currClass->next;
+      }
   }
 }
